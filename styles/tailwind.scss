@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;400;500;700&family=Poppins:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply h-screen bg-fixed bg-black;
+  }
+
+  body {
+    @apply font-body antialiased leading-7 tracking-wide text-[18px] text-black;
+
+    #__nuxt {
+      @apply min-h-screen flex flex-col;
+    }
+  }
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    @apply font-head font-bold leading-snug text-black;
+  }
+
+  h1 {
+    @apply text-3xl lg:text-4xl xl:text-5xl;
+  }
+
+  ul {
+    @apply pl-8 mb-4 text-lg tracking-normal leading-relaxed;
+  }
+
+  img {
+    @apply rounded-lg shadow-md shadow-black/75;
+  }
+}
+
+@layer utilities {
+  .hideScroll {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
+    }
+  }
+
+  .imageButton {
+    @apply bg-black/55 text-white w-8 h-8 rounded-full flex items-center justify-center;
+  }
+}
