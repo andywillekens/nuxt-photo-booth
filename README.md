@@ -1,6 +1,6 @@
 # Nuxt 3 Photo booth
 
-Exploring the native MediaDevices web APIs for integration within Nuxt, checkout the live [demo here](nuxt-photo-booth.vercel.app)
+Exploring the native MediaDevices web APIs for integration within Nuxt, checkout the live [demo here](https://nuxt-photo-booth.vercel.app)
 
 ## Setup
 
