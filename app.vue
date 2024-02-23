@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   type Picture = {
+    name: string
     data: string
     alt: string
     ext: string
@@ -53,12 +54,22 @@
         // Add latest picture to array
         const imageData = latestPicture.value?.toDataURL('image/jpeg')
         const imageObject = {
+          name: `photo-${pictureArray.value.length}`,
           data: imageData,
-          alt: 'Knappe beer',
+          alt: 'nuxt-photo-booth-picture',
           ext: '.jpg'
         } as Picture
         pictureArray.value.push(imageObject)
       }
+    }
+  }
+
+  const deletePicture = (key: Picture) => {
+    // delete pictureArray.value[key]
+    // pictureArray.value.splice(key, 1)
+    let index = pictureArray.value.indexOf(key)
+    if (index !== -1) {
+      pictureArray.value.splice(index, 1)
     }
   }
 
@@ -88,13 +99,12 @@
       <!-- Photostrip -->
       <section
         ref="photoStrip"
-        class="w-full h-auto min-h-32 bg-blue-950/5 flex justify-start items-center pl-6 gap-3">
+        class="w-full h-auto min-h-32 bg-blue-950/10 flex justify-start items-center pl-6 gap-3">
         <button
           @click="takePhoto"
           class="w-16 h-16 bg-blue-600 hover:bg-blue-500 rounded-full group text-blue-200 hover:text-blue-100 border-2 border-blue-200 hover:border-blue-100 flex-shrink-0 transition-colors duration-300">
           <Icon name="ph:camera-duotone" size="32" />
         </button>
-        <!-- grid-template-columns: 1fr 1fr; grid-auto-flow: row dense; -->
         <section
           @wheel="scrollX"
           ref="scrollCarousel"
@@ -104,7 +114,7 @@
             leave-to-class="opacity-0 scale-90"
             enter-active-class="transition duration-300"
             leave-active-class="transition duration-300">
-            <template v-for="picture in pictureArray" :key="picture.data">
+            <template v-for="picture in pictureArray" :key="picture.title">
               <div class="group relative">
                 <!-- Button container -->
                 <div
@@ -116,7 +126,10 @@
                     title="Download this image">
                     <Icon name="ph:arrow-down" size="18" />
                   </a>
-                  <button class="imageButton hover:bg-red-600/75" title="Delete this image">
+                  <button
+                    @click="deletePicture(picture)"
+                    class="imageButton hover:bg-red-600/75"
+                    title="Delete this image">
                     <Icon name="ph:x" size="18" />
                   </button>
                 </div>
