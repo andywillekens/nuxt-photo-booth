@@ -3,6 +3,7 @@
   const latestPicture = ref<HTMLCanvasElement | null>(null)
   const pictureArray = ref([] as Picture[])
   const scrollCarousel = ref<HTMLElement | null>(null)
+  const cameraEnabled = ref<Boolean>(false)
 
   const getVideoFeed = () => {
     navigator.mediaDevices
@@ -12,9 +13,12 @@
         }
       })
       .then((localMediaStream) => {
-        if (liveFeed.value) {
+        if (liveFeed.value && localMediaStream) {
           liveFeed.value.srcObject = localMediaStream
           liveFeed.value.play()
+          cameraEnabled.value = true
+        } else {
+          cameraEnabled.value = false
         }
       })
       .catch((error) => {
@@ -22,7 +26,7 @@
       })
   }
 
-  const takePhoto = () => {
+  const takePicture = () => {
     if (liveFeed.value && latestPicture.value) {
       const context = latestPicture.value.getContext('2d')
       if (context) {
@@ -76,6 +80,12 @@
 </script>
 <template>
   <main>
+    <!-- Overlay -->
+    <section
+      v-if="!cameraEnabled"
+      class="flex justify-center items-center bg-black/80 text-blue-600 w-full h-full absolute top-0 left-0 z-40">
+      <Icon name="svg-spinners:90-ring-with-bg" size="90" />
+    </section>
     <!-- Live video feed -->
     <video
       ref="liveFeed"
@@ -86,7 +96,7 @@
     <section
       class="w-full h-auto min-h-32 bg-blue-950/10 flex justify-start items-center pl-6 gap-3 absolute z-10 bottom-0">
       <!-- Photo button -->
-      <PhotoButton @click="takePhoto">
+      <PhotoButton @click="takePicture">
         <Icon name="ph:camera-duotone" size="32" />
       </PhotoButton>
       <!-- Preview scroller -->
@@ -101,7 +111,7 @@
           enter-active-class="transition duration-100"
           leave-active-class="transition duration-100">
           <template v-for="picture in pictureArray" :key="picture.name">
-            <div class="group relative">
+            <div class="group relative" :id="picture.name">
               <!-- Download & delete buttons -->
               <ActionButtons :picture="picture" @deletePicture="pictureToDelete" />
               <!-- Preview image -->
