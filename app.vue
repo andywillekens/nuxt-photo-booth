@@ -77,6 +77,15 @@
   onBeforeMount(() => {
     getVideoFeed()
   })
+
+  onMounted(() => {
+    window.addEventListener('resize', () => {
+      if (liveFeed.value) {
+        liveFeed.value.style.width = window.innerWidth + 'px';
+        liveFeed.value.style.height = window.innerHeight + 'px';
+      }
+    });
+  });
 </script>
 <template>
   <main>
@@ -94,7 +103,7 @@
     <canvas ref="latestPicture" class="hidden"></canvas>
     <!-- UI footer -->
     <section
-      class="w-full h-auto min-h-32 bg-blue-950/10 flex justify-start items-center pl-6 gap-3 absolute z-10 bottom-0">
+      class="w-full h-auto min-h-32 bg-blue-950/10 flex justify-start items-center pl-6 gap-3 fixed z-10 bottom-0">
       <!-- Photo button -->
       <PhotoButton @click="takePicture">
         <Icon name="ph:camera-duotone" size="32" />
